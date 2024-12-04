@@ -5,6 +5,6 @@ export const useGetChat = () =>
   useQuery({
     queryKey: ["chat"],
     queryFn: async () =>
-      (await fetchClient().get(`v1/chats/${sessionStorage.getItem("chatId")}`))
+      (await fetchClient().get(`v1/chats/${localStorage.getItem("chatId")}`))
         .data,
   });

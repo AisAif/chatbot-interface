@@ -6,7 +6,7 @@ function fetchClient() {
   });
 
   instance.interceptors.request.use((config) => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     config.headers.Authorization = token
       ? // eslint-disable-next-line no-useless-escape
         `Bearer ${token.replace(/\"/g, "")}`
@@ -18,7 +18,7 @@ function fetchClient() {
     (response) => response,
     (error) => {
       if (error.response.status === 401) {
-        sessionStorage.removeItem("token");
+        localStorage.removeItem("token");
         window.location.href = "/login";
       }
       return Promise.reject(error);
