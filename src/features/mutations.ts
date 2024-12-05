@@ -2,17 +2,28 @@
 import { useMutation } from "@tanstack/react-query";
 import fetchClient from "../libs/axios";
 
+export const useCreateChat = () =>
+  useMutation({
+    mutationFn: async ({ title, messages }: { title?: string; messages: any[] }) =>
+      (
+        await fetchClient().post(`v1/chats/new`, {
+          chat: {
+            title: title || "New Chat",
+            models: ["gpt-4"],
+            messages: messages,
+          },
+        })
+      ).data,
+  });
+
 export const useUpdateChat = () =>
   useMutation({
-    mutationFn: async ({ messages }: { messages: any[] }) =>
+    mutationFn: async ({ id, messages }: { id: string; messages: any[] }) =>
       (
-        await fetchClient().post(
-          `v1/chats/${localStorage.getItem("chatId")}`,
-          {
-            chat: {
-              messages: messages,
-            },
-          }
-        )
+        await fetchClient().post(`v1/chats/${id}`, {
+          chat: {
+            messages: messages,
+          },
+        })
       ).data,
   });
